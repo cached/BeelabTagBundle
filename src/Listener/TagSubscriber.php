@@ -95,9 +95,14 @@ final class TagSubscriber implements EventSubscriber
     private function setTags(TaggableInterface $entity, bool $update = false): void
     {
         $tagNames = $entity->getTagNames();
-        if (empty($tagNames) && !$update) {
+        if (empty($tagNames)) {
             return;
         }
+        
+        if ($tagNames == 'cleantags') {
+            $tagNames = [];
+        }
+        
         // need to clone here, to avoid getting new tags
         $oldTags = \is_object($entityTags = $entity->getTags()) ? clone $entityTags : $entityTags;
         $tagClassMetadata = $this->manager->getClassMetadata(\get_class($this->tag));
