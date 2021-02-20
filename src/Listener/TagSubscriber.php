@@ -119,8 +119,10 @@ final class TagSubscriber implements EventSubscriber
         }
         // if updating, need to check if some tags were removed
         if ($update) {
+            $difference = array_diff($oldTags->toArray(), $tagNames);
+            
             foreach ($oldTags as $oldTag) {
-                if (!\in_array($oldTag->getName(), $tagNames)) {
+                if (\in_array($oldTag->getName(), $difference)) {
                     $entity->removeTag($oldTag);
                 }
             }
